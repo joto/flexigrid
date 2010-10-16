@@ -80,10 +80,9 @@
 				(
 			 	function ()
 					{
-					var n = $('thead tr:first th:visible',g.hDiv).index(this);
-
-					var cdpos = parseInt($('div',this).width());
-					var ppos = cdpos;
+					var n = $('thead tr:first th:visible',g.hDiv).index(this),
+					    cdpos = parseInt($('div',this).width()),
+					    ppos = cdpos;
 					if (cdleft==0) 
 							cdleft -= Math.floor(p.cgwidth/2); 
 
@@ -126,8 +125,8 @@
 				if (dragtype=='colresize') //column resize
 					{
 						$(g.nDiv).hide();$(g.nBtn).hide();
-						var n = $('div',this.cDrag).index(obj);
-						var ow = $('th:visible div:eq('+n+')',this.hDiv).width();
+						var n = $('div',this.cDrag).index(obj),
+						    ow = $('th:visible div:eq('+n+')',this.hDiv).width();
 						$(obj).addClass('dragging').siblings().hide();
 						$(obj).prev().addClass('dragging').show();
 						
@@ -178,10 +177,10 @@
 			
 				if (this.colresize) //column resize
 					{
-						var n = this.colresize.n;
-						var diff = e.pageX-this.colresize.startX;
-						var nleft = this.colresize.ol + diff;
-						var nw = this.colresize.ow + diff;
+						var n = this.colresize.n,
+						    diff = e.pageX-this.colresize.startX,
+						    nleft = this.colresize.ol + diff,
+						    nw = this.colresize.ow + diff;
 						if (nw > p.minwidth)
 							{
 								$('div:eq('+n+')',this.cDrag).css('left',nleft);
@@ -190,17 +189,17 @@
 					}
 				else if (this.vresize) //table resize
 					{
-						var v = this.vresize;
-						var y = e.pageY;
-						var diff = y-v.sy;
+						var v = this.vresize,
+						    y = e.pageY,
+						    diff = y-v.sy;
 						
 						if (!p.defwidth) p.defwidth = p.width;
 						
 						if (p.width != 'auto' && !p.nohresize && v.hgo)
 						{
-							var x = e.pageX;
-							var xdiff = x - v.sx;
-							var newW = v.w + xdiff;
+							var x = e.pageX,
+							    xdiff = x - v.sx,
+							    newW = v.w + xdiff;
 							if (newW > p.defwidth)
 								{
 									this.gDiv.style.width = newW + 'px';
@@ -234,8 +233,8 @@
 
 				if (this.colresize)
 					{
-						var n = this.colresize.n;
-						var nw = this.colresize.nw;
+						var n = this.colresize.n,
+						    nw = this.colresize.nw;
 
 								$('th:visible div:eq('+n+')',this.hDiv).css('width',nw);
 								$('tr',this.bDiv).each (
@@ -294,17 +293,14 @@
 			},
 			toggleCol: function(cid,visible) {
 				
-				var ncol = $("th[axis='col"+cid+"']",this.hDiv)[0];
-				var n = $('thead th',g.hDiv).index(ncol);
-				var cb = $('input[value='+cid+']',g.nDiv)[0];
-				
+				var ncol = $("th[axis='col"+cid+"']",this.hDiv)[0],
+				    n = $('thead th',g.hDiv).index(ncol),
+				    cb = $('input[value='+cid+']',g.nDiv)[0];
 				
 				if (visible==null)
 					{
 						visible = ncol.hide;
 					}
-				
-				
 				
 				if ($('input:checked',g.nDiv).length<p.minColToggle&&!visible) return false;
 				
@@ -431,8 +427,8 @@
 							 	function ()
 									{
 										
-										var td = document.createElement('td');
-										var idx = $(this).attr('axis').substr(3);
+										var td = document.createElement('td'),
+										    idx = $(this).attr('axis').substr(3);
 										td.align = this.align;
 										td.innerHTML = row.cell[idx];
 										$(tr).append(td);
@@ -487,8 +483,8 @@
 							 	function ()
 									{
 										
-										var td = document.createElement('td');
-										var idx = $(this).attr('axis').substr(3);
+										var td = document.createElement('td'),
+										    idx = $(this).attr('axis').substr(3);
 										td.align = this.align;
 										td.innerHTML = $("cell:eq("+ idx +")",robj).text();
 										$(tr).append(td);
@@ -570,8 +566,8 @@
 				this.domElements.pcontrol_span.html(p.pages);
 			}
 			
-			var r1 = (p.page-1) * p.rp + 1;
-			var r2 = r1 + p.rp - 1;
+			var r1 = (p.page-1) * p.rp + 1,
+			    r2 = r1 + p.rp - 1;
 			
 			if (p.total<r2) r2 = p.total;
 			
@@ -681,9 +677,9 @@
 					(
 						function ()
 							{
-									var tdDiv = document.createElement('div');
-									var n = $('td',$(this).parent()).index(this);
-									var pth = $('th:eq('+n+')',g.hDiv).get(0);
+									var tdDiv = document.createElement('div'),
+									    n = $('td',$(this).parent()).index(this),
+									    pth = $('th:eq('+n+')',g.hDiv).get(0);
 			
 									if (pth!=null)
 									{
@@ -704,8 +700,8 @@
 									 //tdDiv.value = this.innerHTML; //store preprocess value
 									 tdDiv.innerHTML = this.innerHTML;
 									 
-									 var prnt = $(this).parent()[0];
-									 var pid = false;
+									 var prnt = $(this).parent()[0],
+									     pid = false;
 									 if (prnt.id) pid = prnt.id.substr(3);
 									 
 									 if (pth!=null)
@@ -723,14 +719,14 @@
 			},
 			getCellDim: function (obj) // get cell prop for editable event
 			{
-				var ht = parseInt($(obj).height());
-				var pht = parseInt($(obj).parent().height());
-				var wt = parseInt(obj.style.width);
-				var pwt = parseInt($(obj).parent().width());
-				var top = obj.offsetParent.offsetTop;
-				var left = obj.offsetParent.offsetLeft;
-				var pdl = parseInt($(obj).css('paddingLeft'));
-				var pdt = parseInt($(obj).css('paddingTop'));
+				var ht = parseInt($(obj).height()),
+				    pht = parseInt($(obj).parent().height()),
+				    wt = parseInt(obj.style.width),
+				    pwt = parseInt($(obj).parent().width()),
+				    top = obj.offsetParent.offsetTop,
+				    left = obj.offsetParent.offsetLeft,
+				    pdl = parseInt($(obj).css('paddingLeft')),
+				    pdt = parseInt($(obj).css('paddingTop'));
 				return {ht:ht,wt:wt,top:top,left:left,pdl:pdl, pdt:pdt, pht:pht, pwt: pwt};
 			},
 			addRowProp: function()
@@ -807,8 +803,8 @@
 			
 			for (i=0;i<p.colModel.length;i++)
 				{
-					var cm = p.colModel[i];
-					var th = document.createElement('th');
+					var cm = p.colModel[i],
+					    th = document.createElement('th');
 
 					th.innerHTML = cm.display;
 					
@@ -1011,9 +1007,9 @@
 									
 									} else if (!g.colresize) {
 										
-									var nv = $('th:visible',g.hDiv).index(this);
-									var onl = parseInt($('div:eq('+nv+')',g.cDrag).css('left'));
-									var nw = jQuery(g.nBtn).outerWidth();
+									var nv = $('th:visible',g.hDiv).index(this),
+									    onl = parseInt($('div:eq('+nv+')',g.cDrag).css('left')),
+									    nw = jQuery(g.nBtn).outerWidth();
 									nl = onl - nw + Math.floor(p.cgwidth/2);
 									
 									$(g.nDiv).hide();$(g.nBtn).hide();
@@ -1100,8 +1096,8 @@
 
 		$(g.bDiv).before(g.cDrag);
 		
-		var cdheight = $(g.bDiv).height();
-		var hdheight = $(g.hDiv).height();
+		var cdheight = $(g.bDiv).height(),
+		    hdheight = $(g.hDiv).height();
 		
 		$(g.cDrag).css({top: -hdheight + 'px'});
 		
@@ -1275,8 +1271,8 @@
 
 		//add block
 		g.block.className = 'gBlock';
-		var gh = $(g.bDiv).height();
-		var gtop = g.bDiv.offsetTop;
+		var gh = $(g.bDiv).height(),
+		    gtop = g.bDiv.offsetTop;
 		$(g.block).css(
 		{
 			width: g.bDiv.style.width,
@@ -1308,13 +1304,12 @@
 			
 			var cn = 0;
 			
-			
 			$('th div',g.hDiv).each
 			(
 			 	function ()
 					{
-						var kcol = $("th[axis='col" + cn + "']",g.hDiv)[0];
-						var chk = 'checked="checked"';
+						var kcol = $("th[axis='col" + cn + "']",g.hDiv)[0],
+						    chk = 'checked="checked"';
 						if (kcol.style.display=='none') chk = '';
 						
 						$('tbody',g.nDiv).append('<tr><td class="ndcol1"><input type="checkbox" '+ chk +' class="togCol" value="'+ cn +'" /></td><td class="ndcol2">'+this.innerHTML+'</td></tr>');

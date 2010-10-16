@@ -165,7 +165,7 @@
 						}
 						
 						
-						$(this.colCopy).css({position:'absolute',float:'left',display:'none', textAlign: obj.align});
+						$(this.colCopy).css({position:'absolute','float':'left',display:'none', textAlign: obj.align});
 						$('body').append(this.colCopy);
 						$(this.cDrag).hide();
 						
@@ -370,12 +370,16 @@
 				if (p.preProcess)
 					data = p.preProcess(data);
 				
-				$('.pReload',this.pDiv).removeClass('loading');
+				if (this.pDiv) {
+					 this.domElements.pReload.removeClass('loading');
+				}
 				this.loading = false;
 
 				if (!data) 
 					{
-					$('.pPageStat',this.pDiv).html(p.errormsg);	
+					if (this.pDiv) {
+						this.domElements.pPageStat.html(p.errormsg);	
+					}
 					return false;
 					}
 
@@ -391,7 +395,9 @@
 					p.pages = 1;
 					p.page = 1;
 					this.buildpager();
-					$('.pPageStat',this.pDiv).html(p.nomsg);
+					if (this.pDiv) {
+						this.domElements.pPageStat.html(p.nomsg);	
+					}
 					return false;
 					}
 				
@@ -559,11 +565,13 @@
 			},
 			buildpager: function(){ //rebuild pager based on new properties
 			
-			$('.pcontrol input',this.pDiv).val(p.page);
-			$('.pcontrol span',this.pDiv).html(p.pages);
+			if (this.pDiv) {
+				this.domElements.pcontrol_input.val(p.page);
+				this.domElements.pcontrol_span.html(p.pages);
+			}
 			
-			var r1 = (p.page-1) * p.rp + 1; 
-			var r2 = r1 + p.rp - 1; 
+			var r1 = (p.page-1) * p.rp + 1;
+			var r2 = r1 + p.rp - 1;
 			
 			if (p.total<r2) r2 = p.total;
 			
@@ -573,7 +581,9 @@
 			stat = stat.replace(/{to}/,r2);
 			stat = stat.replace(/{total}/,p.total);
 			
-			$('.pPageStat',this.pDiv).html(stat);
+			if (this.pDiv) {
+				this.domElements.pPageStat.html(stat);	
+			}
 			
 			},
 			populate: function () { //get latest data
@@ -589,9 +599,10 @@
 				this.loading = true;
 				if (!p.url) return false;
 				
-				$('.pPageStat',this.pDiv).html(p.procmsg);
-				
-				$('.pReload',this.pDiv).addClass('loading');
+				if (this.pDiv) {
+					this.domElements.pPageStat.html(p.procmsg);	
+					this.domElements.pReload.addClass('loading');
+				}
 				
 				$(g.block).css({top:g.bDiv.offsetTop});
 				
@@ -644,13 +655,15 @@
 					case 'next': if (p.page<p.pages) p.newp = parseInt(p.page) + 1; break;
 					case 'last': p.newp = p.pages; break;
 					case 'input': 
-							var nv = parseInt($('.pcontrol input',this.pDiv).val());
-							if (isNaN(nv)) nv = 1;
-							if (nv<1) nv = 1;
-							else if (nv > p.pages) nv = p.pages;
-							$('.pcontrol input',this.pDiv).val(nv);
-							p.newp =nv;
-							break;
+							if (this.pDiv) {
+								var nv = parseInt(this.domElements.pcontrol_input.val());
+								if (isNaN(nv)) nv = 1;
+								if (nv<1) nv = 1;
+								else if (nv > p.pages) nv = p.pages;
+								this.domElements.pcontrol_input.val(nv);
+								p.newp =nv;
+								break;
+							}
 				}
 			
 				if (p.newp==p.page) return false;
@@ -1072,7 +1085,7 @@
 		var cdcol = $('thead tr:first th:first',g.hDiv).get(0);
 		
 		if (cdcol != null)
-		{		
+		{
 		g.cDrag.className = 'cDrag';
 		g.cdpad = 0;
 		
@@ -1159,13 +1172,20 @@
 		$(g.bDiv).after(g.pDiv);
 		var html = ' <div class="pGroup"> <div class="pFirst pButton"><span></span></div><div class="pPrev pButton"><span></span></div> </div> <div class="btnseparator"></div> <div class="pGroup"><span class="pcontrol">'+p.pagetext+' <input type="text" size="4" value="1" /> '+p.outof+' <span> 1 </span></span></div> <div class="btnseparator"></div> <div class="pGroup"> <div class="pNext pButton"><span></span></div><div class="pLast pButton"><span></span></div> </div> <div class="btnseparator"></div> <div class="pGroup"> <div class="pReload pButton"><span></span></div> </div> <div class="btnseparator"></div> <div class="pGroup"><span class="pPageStat"></span></div>';
 		$('div',g.pDiv).html(html);
+
+		g.domElements = {
+			pReload: $('.pReload', g.pDiv),
+			pPageStat: $('.pPageStat', g.pDiv),
+			pcontrol_input: $('.pcontrol input', g.pDiv),
+			pcontrol_span: $('.pcontrol span', g.pDiv)
+		};
 		
-		$('.pReload',g.pDiv).click(function(){g.populate()});
+		g.domElements.pReload.click(function(){g.populate()});
 		$('.pFirst',g.pDiv).click(function(){g.changePage('first')});
 		$('.pPrev',g.pDiv).click(function(){g.changePage('prev')});
 		$('.pNext',g.pDiv).click(function(){g.changePage('next')});
 		$('.pLast',g.pDiv).click(function(){g.changePage('last')});
-		$('.pcontrol input',g.pDiv).keydown(function(e){if(e.keyCode==13) g.changePage('input')});
+		g.domElements.pcontrol_input.keydown(function(e){if(e.keyCode==13) g.changePage('input')});
 		if ($.browser.msie&&$.browser.version<7) $('.pButton',g.pDiv).hover(function(){$(this).addClass('pBtnOver');},function(){$(this).removeClass('pBtnOver');});
 			
 			if (p.useRp)

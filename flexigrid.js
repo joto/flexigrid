@@ -81,8 +81,7 @@
 			 	function ()
 					{
 					var n = $('thead tr:first th:visible',g.hDiv).index(this),
-					    cdpos = parseInt($('div',this).width()),
-					    ppos = cdpos;
+					    cdpos = parseInt($('div',this).width());
 					if (cdleft==0) 
 							cdleft -= Math.floor(p.cgwidth/2); 
 
@@ -440,7 +439,7 @@
 							if ($('thead',this.gDiv).length<1) //handle if grid has no headers
 							{
 
-									for (idx=0;idx<cell.length;idx++)
+									for (var idx=0;idx<cell.length;idx++)
 										{
 										var td = document.createElement('td');
 										td.innerHTML = row.cell[idx];
@@ -456,7 +455,7 @@
 					
 				} else if (p.dataType=='xml') {
 
-				i = 1;
+				var i = 1;
 
 				$("rows row",data).each
 				(
@@ -798,10 +797,10 @@
 		//create model if any
 		if (p.colModel)
 		{
-			thead = document.createElement('thead');
-			tr = document.createElement('tr');
+			var thead = document.createElement('thead');
+			var tr = document.createElement('tr');
 			
-			for (i=0;i<p.colModel.length;i++)
+			for (var i=0;i<p.colModel.length;i++)
 				{
 					var cm = p.colModel[i],
 					    th = document.createElement('th');
@@ -1009,8 +1008,8 @@
 										
 									var nv = $('th:visible',g.hDiv).index(this),
 									    onl = parseInt($('div:eq('+nv+')',g.cDrag).css('left')),
-									    nw = jQuery(g.nBtn).outerWidth();
-									nl = onl - nw + Math.floor(p.cgwidth/2);
+									    nw = jQuery(g.nBtn).outerWidth(),
+									    nl = onl - nw + Math.floor(p.cgwidth/2);
 									
 									$(g.nDiv).hide();$(g.nBtn).hide();
 									
@@ -1189,8 +1188,9 @@
 			var opt = "";
 			for (var nx=0;nx<p.rpOptions.length;nx++)
 			{
-				if (p.rp == p.rpOptions[nx]) sel = 'selected="selected"'; else sel = '';
-				 opt += "<option value='" + p.rpOptions[nx] + "' " + sel + " >" + p.rpOptions[nx] + "&nbsp;&nbsp;</option>";
+                var sel = '';
+				if (p.rp == p.rpOptions[nx]) sel = 'selected="selected"';
+				opt += "<option value='" + p.rpOptions[nx] + "' " + sel + " >" + p.rpOptions[nx] + "&nbsp;&nbsp;</option>";
 			};
 			$('.pDiv2',g.pDiv).prepend("<div class='pGroup'><select name='rp'>"+opt+"</select></div> <div class='btnseparator'></div>");
 			$('select',g.pDiv).change(
